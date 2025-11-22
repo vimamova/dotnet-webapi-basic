@@ -1,20 +1,27 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿// En Todo.WebApi/Controllers/UsersController.cs
 using Microsoft.AspNetCore.Mvc;
+using Todo.WebApi.Models;
+using Todo.WebApi.Repositories;
 
-namespace Todo.WebApi.Controllers
+[Route("api/[controller]")]
+[ApiController]
+public class UsersController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class UsersController : ControllerBase
-    {
-        public UsersController()
-        {
+    private readonly IUserRepository _userRepository;
 
-        }
-        [HttpGet]
-        public async Task<IActionResult> GelHelloWorld()
-        {
-            return Ok("Hello World");
-        }
+    // Inyección de dependencias del repositorio
+    public UsersController(IUserRepository userRepository)
+    {
+        _userRepository = userRepository;
     }
+
+    // GET: api/Users
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+    {
+        // Lógica para listar usuarios (aún falta implementar DTOs y lógica de hashing)
+        return Ok(await _userRepository.GetAllAsync());
+    }
+
+    // ... Continúa implementando los métodos GET by ID, POST, PUT, DELETE
 }
